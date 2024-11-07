@@ -6,6 +6,10 @@ import boto3
 from botocore.exceptions import ClientError
 
 
+# Create Logger
+logger = logging.getLogger(__name__)
+
+
 class S3Buckets:
     @classmethod
     def credentials(cls, region=None):
