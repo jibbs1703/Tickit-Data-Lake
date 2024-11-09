@@ -106,6 +106,18 @@ class S3Buckets:
         """
         file = self.client.download_file(bucket_name, object_name, file_name)
         return file
+    
+    def delete_file(self, bucket_name, file_name):
+        """
+        Deletes a file from an S3 bucket in the user's AWS account.
+
+        :param bucket_name: Name of the bucket to access the file
+        :param object_name: Name of the file to delete from the S3 bucket
+
+        :return: None
+        """
+        self.client.delete_object(Bucket=bucket_name, Key=file_name)
+        return f"The file {file_name} has been deleted from the bucket {bucket_name}"
 
     def read_file(self, bucket_name, object_name):
         """
