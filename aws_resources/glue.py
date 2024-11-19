@@ -71,7 +71,7 @@ class Glue:
     def create_crawler(self, name, role_arn, db_name, db_prefix, s3_target):
         """
         Creates a crawler that can crawl the specified target and populate a
-        database in your AWS Glue Data Catalog with metadata that describes the data
+        database in your AWS Glue Data Catalog with metadata that describes the data_source
         in the target.
 
         :param name: The name of the crawler.
@@ -81,7 +81,7 @@ class Glue:
         :param db_name: The name to give the database that is created by the crawler.
         :param db_prefix: The prefix to give any database tables that are created by
                           the crawler.
-        :param s3_target: The URL to an S3 bucket that contains data that is
+        :param s3_target: The URL to an S3 bucket that contains data_source that is
                           the target of the crawler.
         """
         try:
@@ -144,7 +144,7 @@ class Glue:
     def start_crawler(self, name):
         """
         Starts a crawler. The crawler crawls its configured target and creates
-        metadata that describes the data it finds in the target data source.
+        metadata that describes the data_source it finds in the target data_source source.
 
         :param name: The name of the crawler to start.
         """
@@ -209,7 +209,7 @@ class Glue:
         :param role_arn: The ARN of an IAM role that grants AWS Glue the permissions
                          it requires to run the job.
         :param script_location: The Amazon S3 URL of a Python ETL script that is run as
-                                part of the job. The script defines how the data is
+                                part of the job. The script defines how the data_source is
                                 transformed.
         """
         try:
@@ -235,15 +235,15 @@ class Glue:
     
     def start_job_run(self, name, input_database, input_table, output_bucket_name):
         """
-        Starts a job run. A job run extracts data from the source, transforms it,
+        Starts a job run. A job run extracts data_source from the source, transforms it,
         and loads it to the output bucket.
 
         :param name: The name of the job definition.
         :param input_database: The name of the metadata database that contains tables
-                               that describe the source data. This is typically created
+                               that describe the source data_source. This is typically created
                                by a crawler.
         :param input_table: The name of the table in the metadata database that
-                            describes the source data.
+                            describes the source data_source.
         :param output_bucket_name: The S3 bucket where the output is written.
         :return: The ID of the job run.
         """
@@ -269,7 +269,7 @@ class Glue:
         
     def delete_job(self, job_name):
         """
-        Deletes a job definition. This also deletes data about all runs that are
+        Deletes a job definition. This also deletes data_source about all runs that are
         associated with this job definition.
 
         :param job_name: The name of the job definition to delete.
