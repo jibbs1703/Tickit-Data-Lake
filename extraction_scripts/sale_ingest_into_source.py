@@ -1,28 +1,32 @@
+import configparser
 import sqlite3
 import pandas as pd
+from aws_resources.s3 import S3Buckets
 
-# Full or relative path to your SQLite database file
-db_path="C:/Users/ameen/OneDrive/Documents/github/Tickit-Data-Lake/data_source/tickit.sqlite3"
-# Connect to the SQLite database
-connection = sqlite3.connect(db_path)
+# Connect to Config File to Access Needed Variables
+config = configparser.ConfigParser()
+config.read('../config.ini')
 
-# Create a cursor to execute SQL commands
-cursor = connection.cursor()
+def extract_venue(db_path=config['DATABASE']['PATH'], table_name=None):
+    # Connect to the SQLite database
+    connection = sqlite3.connect(db_path)
 
-# Example: Execute a query
-query = "SELECT * FROM venue"
-cursor.execute(query)
+    # Create a cursor to execute SQL commands
+    cursor = connection.cursor()
 
-# Fetch and print the results
-results = cursor.fetchall()
-for row in results:
-    print(row)
+    # Execute Query to Extract All Rows from Venue Table
+    query = f"SELECT * FROM {table_name}"
+    cursor.execute(query)
 
-# View Query Results as Pandas DataFrame
-df = pd.read_sql_query(query, connection)
-print(df.head)
-print(df.shape)
-df.to_csv("C:/Users/ameen/OneDrive/Documents/github/Tickit-Data-Lake/data_source/venue.csv", index=False)
+    # Extract Query Results into Pandas DataFrame
+    df = pd.read_sql_query(query, connection)
 
-# Close the connection when done
-connection.close()
+    # Connect to AWS S3 and upload Extracted Dataframe as CSV file
+    s3_conn = S3Buckets.credentials(config['AWS_ACCESS']['REGION'])
+    s3_conn.upload_dataframe_to_s3(df = df,
+                                   bucket_name=config['AWS_ACCESS']['PROJECT_BUCKET'],
+                                   object_name=f'source/{table_name}.csv')
+
+    return f'The {table_name} table was uploaded to the S3 Bucket'
+
+print(extract_venue(table_name='sale'))

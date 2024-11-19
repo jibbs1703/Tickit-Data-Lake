@@ -7,7 +7,7 @@ from aws_resources.s3 import S3Buckets
 config = configparser.ConfigParser()
 config.read('../config.ini')
 
-def extract_venue(db_path = config['DATABASE']['PATH'], table_name = None):
+def extract_venue(db_path=config['DATABASE']['PATH'], table_name=None):
     # Connect to the SQLite database
     connection = sqlite3.connect(db_path)
 
@@ -27,4 +27,6 @@ def extract_venue(db_path = config['DATABASE']['PATH'], table_name = None):
                                    bucket_name=config['AWS_ACCESS']['PROJECT_BUCKET'],
                                    object_name=f'source/{table_name}.csv')
 
-    return
+    return f'The {table_name} table was uploaded to the S3 Bucket'
+
+print(extract_venue(table_name='venue'))
