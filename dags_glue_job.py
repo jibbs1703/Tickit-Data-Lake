@@ -76,18 +76,3 @@ def remove_scripts(folder_name, bucket_name):
             s3.delete_file(bucket_name=bucket_name, file_name=f"{folder_name}/{file}")
 
     return f"The files in {folder_name} have been removed from the bucket: {bucket_name}"
-
-# print(upload_scripts("glue_job_scripts/bronze", "tickit-project-bucket"))
-#print(remove_scripts("glue_job_scripts", "tickit-project-bucket"))
-
-# glue = Glue.credentials('us-east-2')
-
-# glue.create_job(name="tester-job",
-#                 description="Testing glue for the first time",
-#                 role_arn="arn:aws:iam::851725307232:role/jibbs-glue-role",
-#                 script_location='s3://tickit-project-bucket/glue_job_scripts/bronze_to_silver.py'
-#                 )
-
-# glue.delete_job(job_name="tester-job")
-
-extract_tables()
