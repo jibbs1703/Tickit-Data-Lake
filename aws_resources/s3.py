@@ -1,10 +1,15 @@
 import os
 from io import StringIO
+import configparser
 from dotenv import load_dotenv
 import logging
 import boto3
 from botocore.exceptions import ClientError
 
+
+# Connect to Config File to Access Needed Environment Variables
+config = configparser.ConfigParser()
+config.read('../config.ini')
 
 # Create Logger
 logger = logging.getLogger(__name__)
@@ -26,6 +31,7 @@ class S3Buckets:
         load_dotenv()
         secret = os.getenv("ACCESS_SECRET")
         access = os.getenv("ACCESS_KEY")
+
         return cls(secret, access, region)
 
     def __init__(self, secret, access, region):
