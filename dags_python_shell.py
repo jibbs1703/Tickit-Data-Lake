@@ -3,13 +3,13 @@ import sqlite3
 import pandas as pd
 from aws_resources.s3 import S3Buckets
 
-
 # Connect to Config File to Access Needed Environment Variables
 config = configparser.ConfigParser()
 config.read('config.ini')
 
-def extract_tables(db_path=config['DATABASE']['PATH'],
-                     tables =eval(config.get('DATABASE', 'TABLES'))):
+# Extract tables from Source to Bronze Bucket
+def extract_to_bronze_tier(db_path=config['DATABASE']['PATH'],
+                     tables=eval(config.get('DATABASE', 'TABLES'))):
 
     """ Extracts tables from a SQLite database and uploads them to an S3 bucket as CSV files.
     This function connects to a specified SQLite database, extracts specified tables into
@@ -36,7 +36,10 @@ def extract_tables(db_path=config['DATABASE']['PATH'],
         s3_conn = S3Buckets.credentials(config['AWS_ACCESS']['REGION'])
         s3_conn.upload_dataframe_to_s3(df = df,
                                        bucket_name=config['AWS_ACCESS']['PROJECT_BUCKET'],
-                                       object_name=f'source/source_{table}.csv')
+                                       object_name=f'bronze/bronze_{table}.csv')
         print(f"The {table} table was uploaded")
 
     return f'The tables were was uploaded to the S3 Bucket'
+
+def transform_to_silver_tier():
+    pass
