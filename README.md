@@ -16,7 +16,7 @@ In this project, raw, untransformed data resides in external databases and is in
 into a bronze tier S3 bucket. The pipeline works on the raw data, processing it, and subsequently storing it in
 the appropriate data lake tier as determined by business requirements. The tiers are represented as folders within
 a single S3 bucket for this project. However, each tier should be given a dedicated bucket (as it is in production
-environments). 
+environments).
 
 An orchestrator triggers the extraction of the ingested raw and untransformed data into the bronze tier S3 where 
 it is then moved on to the other tiers, getting enriched as it gets refined up the data lake tiers.
@@ -24,7 +24,7 @@ it is then moved on to the other tiers, getting enriched as it gets refined up t
 An understanding of creating and assigning IAM roles is required as the AWS resources used are configured in such
 a way to interact with one another, i.e., a role that grants permission to let AWS Glue access the resources it needs.
 The degree of restrictions can be narrowed down based on the level of security needed. For this pipeline, I assigned 
-an IAM role to access AWS Glue resources and read/write to AWS S3 and Redshift. 
+an IAM role to access AWS Glue resources and read/write to AWS S3 and Redshift.
 
 ## Medallion Architecture
 
@@ -41,7 +41,7 @@ Each tier houses its own schemas and tables, which differ based on data update f
 This multi-layered approach ensures data integrity and optimizes its use for business needs.
 
 
-## 
+## Pipeline Steps
 
 ### Ingesting the Data From Source
 
@@ -64,5 +64,12 @@ performed. For this project, all seven tables are simply moved from the data lan
 data, into the bronze layer, in a separate bucket (usually more secure with more access restrictions compared to the 
 source bucket).
 
+
+### Creating the Silver Data Tier
+
+The silver data tier takes the data a step further in its refinement as the data passes through extensive cleanup and
+validation. The silver tier sees the datatype standardization, filling and/or removal of null values, creation of 
+desirable datatypes, detection and removal of duplicates, and to a certain degree, some data aggregation as some facts
+and dimension tables could be merged in the silver tier to allow downstream users utilize the data. 
 
 
